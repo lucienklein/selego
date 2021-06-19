@@ -17,6 +17,12 @@ function App() {
           search
         )}&image_type=photo&pretty=true&per_page=6`
       );
+
+      if (response.status !== 200) {
+        window.alert(response.statusText);
+        return;
+      }
+
       const { hits: data } = await response.json();
       setInfo(data);
     }
@@ -25,15 +31,22 @@ function App() {
 
   return (
     <div className="App">
-      <input
-        type="text"
-        placeholder="search..."
-        onChange={(event) => setSearch(event.target.value)}
-      />
-      <div>
-        {info.map((el) => (
-          <img key={el.id} src={el.webformatURL} alt={el.tags} />
-        ))}
+      <div className="MainBox">
+        <input
+          type="text"
+          placeholder="search..."
+          className="SearchBar"
+          size="40"
+          onChange={(event) => setSearch(event.target.value)}
+        />
+        <div className="Grid">
+          {info.map((el) => (
+            <img key={el.id} src={el.webformatURL} alt={el.tags} />
+          ))}
+        </div>
+        <div className="Center">
+          {info.length < 1 && <div className="NoData"> No image found </div>}
+        </div>
       </div>
     </div>
   );
